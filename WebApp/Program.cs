@@ -1,7 +1,27 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using WebApp.Data;
+using WebApp.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+builder.Services.AddDbContext<AppDbContext>(option => option.UseSqlServer(connectionString));
+
+builder.Services.AddDefaultIdentity<User>().AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<AppDbContext>();
+
+
+builder.Services.ConfigureApplicationCookie(option =>
+{
+    option.LoginPath = "/auth/login";
+    option.LogoutPath = "/";
+});
 
 var app = builder.Build();
 
