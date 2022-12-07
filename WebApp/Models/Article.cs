@@ -14,6 +14,8 @@
         public Category Category { get; set; }
         public string UserId { get; set; }
         public User User { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsDeleted { get; set; }
         public List<ArticleTag> ArticleTags { get; set; }
     } 
 }

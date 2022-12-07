@@ -17,11 +17,8 @@ builder.Services.AddDefaultIdentity<User>().AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>();
 
 
-builder.Services.ConfigureApplicationCookie(option =>
-{
-    option.LoginPath = "/auth/login";
-    option.LogoutPath = "/";
-});
+
+
 
 var app = builder.Build();
 
