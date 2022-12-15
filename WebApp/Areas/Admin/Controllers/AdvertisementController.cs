@@ -61,9 +61,18 @@ namespace WebApp.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            var data = _context.Advertisements.SingleOrDefault(a => a.Id == id);
-           
+            var data = _context.Advertisements.FirstOrDefault(a => a.Id == id);
             return View(data);
+        }
+
+        [HttpPost]
+        public IActionResult Delete(Advertisement advertisement)
+        {
+            var result = _context.Advertisements.FirstOrDefault(x=>x.Id == advertisement.Id);
+            result.IsDeleted = true;
+            _context.Advertisements.Update(result);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
         }
 
     }

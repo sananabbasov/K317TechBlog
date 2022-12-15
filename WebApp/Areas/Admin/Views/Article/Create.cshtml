@@ -1,7 +1,54 @@
 ﻿@model Article
 
 <form method="post">
-    <div class="col-lg-6 m-auto">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 m-auto">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label asp-for="Title" class="form-label"></label>
+                                    <input class="form-control" asp-for="Title" />
+                                    <span class="text-danger" asp-validation-for="Title"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label asp-for="Content" class="form-label"></label>
+                                    <textarea class="form-control" asp-for="Content"></textarea>
+                                    <span class="text-danger" asp-validation-for="Content"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <input type="submit" value="Add aticle" class="btn btn-outline-success"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="rows">
+                    <div class="card mb-5">
+                        <div class="card-body">
+                            <div class="form-group">
+                                categories
+                            </div>
+                        </div>
+                    </div>
 
+                    <div class="card mb-6">
+                        <div class="card-body">
+                            <div class="form-group">
+                                Images
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </form>
