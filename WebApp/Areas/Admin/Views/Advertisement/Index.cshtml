@@ -18,6 +18,7 @@
                         <th>Views</th>
                         <th>Click</th>
                         <th>Created date</th>
+                        <th>Status</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -29,6 +30,7 @@
                         <th>Views</th>
                         <th>Click</th>
                         <th>Created date</th>
+                        <th>Status</th>
                         <th></th>
                     </tr>
                 </tfoot>
@@ -38,12 +40,22 @@
                         <tr>
                             <td>@ads.Name</td>
                             <td>
-                                <img src="@ads.PhotoUrl" />
+                                <img width="100" src="@ads.PhotoUrl" />
                             </td>
                             <td>@ads.SizeX x @ads.SizeY</td>
                             <td>@ads.View</td>
                             <td>@ads.Click</td>
                             <td>@ads.CreatedDate</td>
+                            <td>
+                                @if (ads.IsDeleted)
+                                {
+                                    <span class="btn btn-danger btn-sm">Deleted</span>
+                                }
+                                else
+                                {
+                                    <span class="btn btn-success btn-sm">Active</span>
+                                }
+                            </td>
                             <td>
                                 <a href="/admin/advertisement/detail/@ads.Id">Detail</a>
                                 <a href="/admin/advertisement/delete/@ads.Id">Delete</a>
