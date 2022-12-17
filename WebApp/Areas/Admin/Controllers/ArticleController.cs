@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using WebApp.Data;
+using WebApp.Helpers;
 using WebApp.Models;
 
 namespace WebApp.Areas.Admin.Controllers
@@ -53,20 +54,13 @@ namespace WebApp.Areas.Admin.Controllers
             ViewBag.Categories = new SelectList(categories, "Id", "Name");
             ViewData["Tags"] = tags;
 
-            var path = "/uploads/" + Guid.NewGuid() + Photo.FileName;
-            using (var fileStream = new FileStream(_env.WebRootPath + path, FileMode.Create))
-            {
-                Photo.CopyTo(fileStream);
-            }
-
-            var seo_url = article.Title.ToLower()
-                .Replace("ə", "e").Replace("ü", "u").Replace("ş", "s").Replace("ğ", "g").Replace(" ","-").Replace(".", "");
-
+            var photo = ImageHelper.UploadSinglePhoto(Photo, _env);
+            var seo_url = SeoUrlHelper.SeoUrl(article.Title);
 
             article.CreatedDate= DateTime.Now;
             article.UpdatedDate= DateTime.Now;
             article.SeoUrl = seo_url;
-            article.PhotoUrl = path;
+            article.PhotoUrl = photo;
             article.Views = 0;
 
             //if (!ModelState.IsValid)
@@ -96,7 +90,45 @@ namespace WebApp.Areas.Admin.Controllers
 
         public IActionResult Edit(int id)
         {
-            return View();
+            var categories = _context.Categories.ToList();
+            var tags = _context.Tags.ToList();
+            ViewBag.Categories = new SelectList(categories, "Id", "Name");
+            ViewData["Tags"] = tags;
+            var article = _context.Articles.Include(x=>x.ArticleTags).FirstOrDefault(x=>x.Id == id);
+
+            return View(article);
         }
+
+        [HttpPost]
+        public IActionResult Edit(Article article, IFormFile Photo, List<int> Tags)
+        {
+            article.UpdatedDate = DateTime.Now;
+            article.IsActive= false;
+            article.SeoUrl = SeoUrlHelper.SeoUrl(article.Title);
+            if (Photo != null)
+                article.PhotoUrl = ImageHelper.UploadSinglePhoto(Photo, _env);
+            var oldTags = _context.ArticleTags.Where(x=>x.ArticleId == article.Id).ToList();
+           _context.ArticleTags.RemoveRange(oldTags);
+
+            _context.SaveChanges();
+            List<ArticleTag> tagList = new();
+
+            for (int i = 0; i < Tags.Count; i++)
+            {
+                ArticleTag articleTag = new()
+                {
+                    ArticleId = article.Id,
+                    TagId = Tags[i]
+                };
+                tagList.Add(articleTag);
+            }
+
+            _context.ArticleTags.AddRange(tagList);
+            _context.Articles.Update(article);
+            _context.SaveChanges();
+
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }
