@@ -1,8 +1,11 @@
-﻿namespace WebApp.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace WebApp.Models
 {
     public class Article
     {
         public int Id { get; set; }
+        [MinLength(3, ErrorMessage = "Basliq minumum 3 simvol olmalidir.")]
         public string Title { get; set; }
         public string Content { get; set; }
         public int Views { get; set; }
