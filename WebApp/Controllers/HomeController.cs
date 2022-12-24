@@ -1,27 +1,32 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using WebApp.Data;
 using WebApp.Models;
+using WebApp.ViewModels;
 
 namespace WebApp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly AppDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(AppDbContext context)
         {
-            _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var articles = _context.Articles.Include(x => x.Category).Include(x=>x.User).Where(x => x.IsDeleted == false || x.IsActive == true).ToList();
+            HomeVM homeVM = new()
+            {
+                Articles = articles
+            };
+
+            return View(homeVM);
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
