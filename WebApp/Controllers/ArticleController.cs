@@ -51,12 +51,15 @@ namespace WebApp.Controllers
 
 
             var suggestArticle = _context.Articles.Include(x => x.Category).Where(x => x.Id != article.Id && x.CategoryId == article.CategoryId).Take(2).ToList();
-
+            var before = _context.Articles.FirstOrDefault(x => x.Id < id);
+            var after = _context.Articles.FirstOrDefault(x => x.Id > id);
 
             DetailVM detailVM = new()
             {
                 Article = article,
-                Suggestions = suggestArticle
+                Suggestions = suggestArticle,
+                Befero = before,
+                After = after
             };
             return View(detailVM);
         }
@@ -72,10 +75,10 @@ namespace WebApp.Controllers
                 ArticleId= comment.ArticleId,
                 Content= comment.Content
             };
-
+            var article = _context.Articles.FirstOrDefault(x=>x.Id == comment.ArticleId);
             await _context.Comments.AddAsync(newComment);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index","Home");
+            return RedirectToAction(nameof(Detail), new {id= article.Id,article.SeoUrl});
         }
     }
 }

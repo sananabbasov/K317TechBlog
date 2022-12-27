@@ -63,34 +63,39 @@
             }
 
 
+            @if (User.IsInRole("Baş redaktor") || User.IsInRole("Admin"))
+            {
 
-            <!-- Nav Item - Dashboard -->
+                <!-- Nav Item - Dashboard -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/category">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>Categories</span>
+                    </a>
+                </li>
+
+                <!-- Nav Item - Dashboard -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/tag">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>Tags</span>
+                    </a>
+                </li>
+                <!-- Nav Item - Dashboard -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/contact">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>Messages</span>
+                    </a>
+                </li>
+            }
+
             <li class="nav-item">
-                <a class="nav-link" href="/admin/category">
+                <a class="nav-link" href="/admin/user/userinfo">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Categories</span>
+                    <span>User info</span>
                 </a>
             </li>
-
-            <!-- Nav Item - Dashboard -->
-            <li class="nav-item">
-                <a class="nav-link" href="/admin/tag">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Tags</span>
-                </a>
-            </li>
-
-
-            <!-- Nav Item - Dashboard -->
-            <li class="nav-item">
-                <a class="nav-link" href="/admin/contact">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Messages</span>
-                </a>
-            </li>
-
-
-
 
 
             @if (User.IsInRole("Admin"))
@@ -112,31 +117,31 @@
                         </div>
                     </div>
                 </li>
+
+                <!-- Divider -->
+                <hr class="sidebar-divider">
+
+                <!-- Nav Item - Dashboard -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/advertisement">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>Advertisements</span>
+                    </a>
+                </li>
+
+
+                <!-- Divider -->
+                <hr class="sidebar-divider">
+
+                <!-- Nav Item - Dashboard -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/comment">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>Comments</span>
+                    </a>
+                </li>
+
             }
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Nav Item - Dashboard -->
-            <li class="nav-item">
-                <a class="nav-link" href="/admin/advertisement">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Advertisements</span>
-                </a>
-            </li>
-
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Nav Item - Dashboard -->
-            <li class="nav-item">
-                <a class="nav-link" href="/admin/comment">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Comments</span>
-                </a>
-            </li>
-
-
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
