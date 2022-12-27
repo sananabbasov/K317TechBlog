@@ -1,30 +1,32 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using WebApp.Areas.Admin.ViewModels;
 using WebApp.Models;
 
 namespace WebApp.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "Admin")]
     public class UserController : Controller
     {
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-
-        public UserController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+        private readonly IHttpContextAccessor _contextAccessor;
+        public UserController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, IHttpContextAccessor contextAccessor)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _contextAccessor = contextAccessor;
         }
-
+        [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
             var users = _userManager.Users.ToList();
             return View(users);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddRole(string id)
         {
             if (id == null) return NotFound();
@@ -45,6 +47,7 @@ namespace WebApp.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddRole(string id, string role)
         {
             if (id == null) return NotFound();
@@ -59,6 +62,17 @@ namespace WebApp.Areas.Admin.Controllers
                 return View();
             }
             return RedirectToAction(nameof(Index));
+        }
+
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> UserInfo()
+        {
+            var userId = _contextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            User user = await _userManager.FindByIdAsync(userId);
+
+            return View(user);
         }
 
 
