@@ -20,5 +20,6 @@ namespace WebApp.Models
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
         public List<ArticleTag> ArticleTags { get; set; }
+        public List<Comment> Comments { get; set; }
     } 
 }
